@@ -1,0 +1,94 @@
+Object oriented acceptance testing
+Andrzej Krzywda
+
+
+
+Cucumber
+- examples
+- most popular
+- lots of libraries
+- good support
+
+
+Cucumber and business language
+- assumption: business writes scenarios
+- not realistic 
+- programmers have to use a language that was not for programmers
+- a bit difficult to test interaction between users
+
+
+
+Steak - pure Ruby scenarios
+- a simple wrapper around RSpec
+- dealing with objects
+- easier to refactor
+- easy to simulate interaction between users
+
+
+Object orientation
+- better for programmers
+- user object
+- page object?
+- widget object (cells?)
+
+
+Business
+- readable
+- they never produce scenarios anyway
+
+
+
+
+Example Steak scenario from Plansza24.pl
+- similar scenarios can be found here:
+https://github.com/drugpl/drug-site/tree/master/spec/acceptance
+
+  scenario "nthx can comment andrzej evaluation" do
+    andrzej = TestUser.new(self)
+    andrzej.register_login("andrzej", "andrzej@example.com", "123456")
+    andrzej.add_new_game("Agricola")
+    andrzej.evaluates("Agricola", "9")
+    andrzej.logout
+
+    nthx = TestUser.new(self)
+    nthx.register_and_login("nthx", "nthx@example.com", "123456")
+    nthx.go_to_main_page
+    nthx.fill_in("comment_content", :with => "Zwariowales?, Agricola to max 8!")
+    nthx.click("Skomentuj")
+    andrzej.should_receive_email("Zwariowales?")
+    nthx.logout
+
+    andrzej.login
+    andrzej.go_to_main_page
+    andrzej.should_see("Zwariowales?")
+    andrzej.likes("Agricola")
+    andrzej.go_to_main_page
+    andrzej.fill_in("comment_content", :with => "Dla mnie 9")
+    andrzej.click("Skomentuj")
+    nthx.should_receive_email("Dla mnie 9")
+
+    guest = TestUser.new(self)
+    guest.go_to_main_page
+    guest.should_see_in_order(["Agricola", "Zwariowales?", "Dla mnie 9", "lubi"])
+    guest.should_not_see("Skomentuj")
+
+    andrzej.logout
+    #commenting from the evaluation page
+    nthx.login
+    nthx.go_to_user_page("andrzej")
+    nthx.click("9")
+    nthx.fill_in("comment_content", :with => "Dziwny jestes")
+    nthx.click("Skomentuj")
+    nthx.go_to_main_page
+    nthx.should_see_in_order(["Agricola", "Zwariowales?", "Dla mnie 9", "Dziwny jestes", "lubi"])
+    #commenting from the game page
+    nthx.go_to_game_page("Agricola")
+    nthx.click("9")
+    nthx.fill_in("comment_content", :with => "Ty tez")
+    nthx.click("Skomentuj")
+    nthx.go_to_main_page
+    nthx.should_see_in_order(["Agricola", "Zwariowales?", "Dla mnie 9", "Dziwny jestes", "Ty tez", "lubi"])
+  end
+
+
+
