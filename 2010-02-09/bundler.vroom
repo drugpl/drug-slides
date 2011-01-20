@@ -1,0 +1,134 @@
+# This is a sample Vroom input file. It should help you get started.
+#
+# Edit this file with your content. Then run `vroom --vroom` to start
+# the show!
+#
+# See `perldoc Vroom::Vroom` for complete details.
+#
+---- config
+# Basic config options.
+title: Vroom!
+indent: 5
+height: 24
+width: 69
+skip: 0
+
+# The following options are for Gvim usage.
+#fuopt: 1024,768
+vim: gvim
+guicursor: a:blinkon0-ver25-Cursor
+guifont: Inconsolata\ 20
+guioptions:
+#
+---- center
+Bundler: A gem to bundle gems
+
+
+
+
+Paweł Pacana <pawel.pacana@gmail.com>, Wrocław 2010
+
+----
+== Intro
+
+* zarządzanie zależnościami
++* Rails 3.0
++  ...i nie tylko
++* rubygems
++* config.gem
+
+---- ruby,i2
+# Rubygems dependency resolution
+#
+#   activesupport 3.0.pre
+#   activesupport 2.3.4
+#   activemerchant 1.4.2
+#   rails 2.3.4
+#
+# activemerchant 1.4.2 depends on activesupport >= 2.3.2
+
+gem "activemerchant", "1.4.2"
+# results in activating activemerchant, as well as
+# activesupport 3.0.pre, since it is >= 2.3.2
+
+gem "rails", "2.3.4"
+# results in:
+#   can't activate activesupport (= 2.3.4, runtime)
+#   for ["rails-2.3.4"], already activated
+#   activesupport-3.0.pre for ["activemerchant-1.4.2"]
+
+---- ruby,i4
+# Gemfile
+source :gemcutter
+source "http://gems.github.com"
+
+gem "rails", "2.3.5"
+gem "rack", "1.0.1"
+gem "viewtastic", :git => "git://github.com/ihoka/viewtastic.git"
+gem "rubyist-aasm", :require => "aasm"
+gem "mime-types"
+gem 'newbamboo-rvideo', :require => 'rvideo'
+
+gem "webrat", :group => :test
+group :test do
+  gem "factory_girl" 
+  gem "redgreen" 
+end
+
+----
+== Bundler w pięciu krokach
+
+* bundle init
++  ...[edit] Gemfile
++* bundle check
++* bundle install
++  ...bundle show
++* bundle pack
++  ...[vcs] add vendor/cache
++* bundle lock
++  ...[vcs] add .bundle/environment.rb
+
+----
+== Bundler w aplikacji
+
+* bundle exec ruby ...
++* initializer
+
+---- ruby,i4
+begin
+  # Require the preresolved locked set of gems.
+  require File.expand_path('../.bundle/environment', __FILE__)
+rescue LoadError
+  # Fallback on doing the resolve at runtime.
+  require "rubygems"
+  require "bundler"
+  Bundler.setup
+end
+# Your application requires come here
+
+----
+== Bundler + Rails 2.3
+
+* config/preinitializer.rb
++* config/environments/{development,test,production}.rb
+
+---- ruby,i4
+# config/environments/test.rb
+#
+# Bundler.require(:default, :test)
+Bundler.require(:default, RAILS_ENV)
+
+----
+
+== Pytania?
+
++* Rails 2.3.5 + Bundler 0.9.3 == BROKEN
++* Bundler 1.0 wkrótce!
++* http://github.com/carlhuda/bundler
+
+----
+== Vroom!
+
+*  http://search.cpan.org/dist/Vroom/
+*  http://github.com/ingydotnet/vroom-pm/
+
