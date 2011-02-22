@@ -1,0 +1,6 @@
+[submodule "2010-12-14/active_model/presentation"]
+	path = 2010-12-14/active_model/presentation
+	url = git://github.com/paneq/drug-activemodel-presentation.git
+[submodule "2010-12-14/active_model/demo"]
+	path = 2010-12-14/active_model/demo
+	url = git://github.com/paneq/rails3-active_model-filter-example.git

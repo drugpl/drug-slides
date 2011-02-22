@@ -1,0 +1,3 @@
+How to use git submodules ?
+http://www.kernel.org/pub/software/scm/git/docs/git-submodule.html
+http://progit.org/book/ch6-6.html
