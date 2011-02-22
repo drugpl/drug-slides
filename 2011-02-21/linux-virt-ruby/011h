@@ -1,0 +1,18 @@
+
+                            ruby-libvirt
+     
+     * Xen, KVM/Qemu, LXC, OpenVZ, UML, VirtualBox, VMware
+     * binding do libvirtd
+       - generyczne API do wirtualizacji (domain, network, storage)
+       - opis domeny (maszyny wirtualnej) w XML
+       - zdalny dostęp: TLS + x509, Kerberos + SASL
+       - zestaw narzędzi 3rd party niezależnych od 
+          wybranej wirtualizacji (np. plugin do collectd, jenkins)
+       - RedHat "Emerging Technology Project"
+     
+
+
+
+
+
+

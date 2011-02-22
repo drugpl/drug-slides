@@ -1,0 +1,18 @@
+
+
+
+
+                          Parawirtualizacja
+     
+     * modyfikowany guest OS - ograniczony wybór
+     * brak analizy kodu "w locie" - szybciej
+     
+     * reprezentanci: UML, Xen(^3), ale..
+       (^2) KVM/Qemu - parawirtualizowane sterowniki sieci i I/O
+       (^3) Xen w trybie HVM - dowolny guest OS
+
+
+
+
+
+

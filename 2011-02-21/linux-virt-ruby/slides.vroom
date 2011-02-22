@@ -1,0 +1,220 @@
+# This is a sample Vroom input file. It should help you get started.
+#
+# Edit this file with your content. Then run `vroom --vroom` to start
+# the show!
+#
+# See `perldoc Vroom` for complete details.
+#
+---- config
+# Basic config options.
+title: Linux + Virtualization + Ruby
+indent: 5
+height: 18
+width: 69
+skip: 0
+
+# The following options are for Gvim usage.
+vim: gvim
+
+---- center
+Linux + Virtualization + Ruby
+
+Paweł Pacana <pawel.pacana@syswise.eu>
+
+
+----
+== Wirtualizacja: istniejące rozwiązania
+
++* VMware
++* VirtualBox
++* Xen
++* UML (User Mode Linux)
++* OpenVZ
++* VServer
++* LXC (Linux Containers)
++* KVM/Qemu
++* Virtuozzo
++* ?
+----
+== Wirtualizacja: rodzaje
+
++* pełna wirtualizacja (maszyny wirtualne)
++* parawirtualizacja
++* wirtualizacja na poziomie OS (kontenery)
+
+----
+== Pełna wirtualizacja
+
++* emulujacja hardware'u
++* dowolny guest OS, nie wymaga modyfikacji
++* wymagany VMM (Virtual Machine Monitor)
+  - uprzywilejowane instrukcje CPU a user-space
++  - wsparcie sprzętowe: AMD-V, Intel VT-x
+
++* reprezentanci: VMWare, VirtualBox, KVM/Qemu(^1)(^2)
+* inne systemy: Microsoft Virtual PC, Paralells
++  (^1) upstream w kernelu
+----
+== Parawirtualizacja
+
++* modyfikowany guest OS - ograniczony wybór
++* brak analizy kodu "w locie" - szybciej
+
++* reprezentanci: UML, Xen(^3), ale..
++  (^2) KVM/Qemu - parawirtualizowane sterowniki sieci i I/O
+  (^3) Xen w trybie HVM - dowolny guest OS
+
+----
+== Wirtualizacja na poziomie OS
+
++* ten sam OS (kernel) ale niekoniecznie dystrybucja
++* izolacja procesów, sieci, pamięci
++* niski narzut na host OS, 1-3%
+
++* reprezentanci: VServer, OpenVZ, LXC(^4), Virtuozzo
+* inne systemy: Solaris Zones, FreeBSD Jails
+  (^4) upstream w kernelu
+
+----
+== Ruby?
+
++* vagrant
++* ruby-libvirt
+
+----
+== Vagrant
+
++* VirtualBox
++* tworzenie maszyn virtualnych z obrazów
++* setupowanie środowiska: Chef, Puppet, shell
++* opakowane ssh, port forwards, dzielone katalogi
++* pakowanie przygotowanego VM do obrazu
+
++* dla programistów
+
+----shell,i4
+
+gem install vagrant
+vagrant box add base http://files.vagrantup.com/lucid32.box
+vagrant init    # tworzy Vagrantfile
+vagrant up      # boot
+vagrant ssh     # ssh localhost -p 2222
+ls /vagrant
+
+---- ruby,i4
+
+Vagrant::Config.run do |config|
+  # Every Vagrant virtual environment requires a box to build off of.
+  config.vm.box = "base"
+
+  # Boot with a GUI so you can see the screen. (Default is headless)
+  # config.vm.boot_mode = :gui
+
+  # Assign this VM to a host only network IP, allowing you to access it
+  # via the IP.
+  config.vm.network "33.33.33.10"
+
+  # Forward a port from the guest to the host, which allows for outside
+  # computers to access the VM, whereas host only networking does not.
+  # config.vm.forward_port "http", 80, 8080
+
+  # Share an additional folder to the guest VM. The first argument is
+  # an identifier, the second is the path on the guest to mount the
+  # folder, and the third is the path on the host to the actual folder.
+  # config.vm.share_folder("v-data", "/vagrant_data", "../data")
+
+  # Enable provisioning with chef solo, specifying a cookbooks path (relative
+  # to this Vagrantfile), and adding some recipes and/or roles.
+  #
+  # config.vm.provisioner = :chef_solo
+  # config.chef.cookbooks_path = "cookbooks"
+  # config.chef.add_recipe "mysql"
+  # config.chef.add_role "web"
+
+  config.vm.customize do |vm|
+    vm.memory_size = 512
+    vm.name = "My Project VM"
+  end
+end
+
+----
+== ruby-libvirt
+
++* Xen, KVM/Qemu, LXC, OpenVZ, UML, VirtualBox, VMware
++* binding do libvirtd
++  - generyczne API do wirtualizacji (domain, network, storage)
++  - opis domeny (maszyny wirtualnej) w XML
++  - zdalny dostęp: TLS + x509, Kerberos + SASL
++  - zestaw narzędzi 3rd party niezależnych od 
+     wybranej wirtualizacji (np. plugin do collectd, jenkins)
++  - RedHat "Emerging Technology Project"
+
++* administratorzy, dostawcy usług,
+   programiści z dużą ilością wolnego czasu
+
+---- ruby,i4
+require 'libvirt'
+
+new_dom_xml = <<-EOF
+<domain type='kvm'>
+  <name>ruby-libvirt-tester</name>
+  <memory>1048576</memory>
+  <vcpu>1</vcpu>
+  <os>
+    <type arch='x86_64'>hvm</type>
+  </os>
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>restart</on_crash>
+  <devices>
+  ...
+  </devices>
+</domain>
+EOF
+
+conn = Libvirt::open('qemu:///system')
+dom = conn.define_domain_xml(new_dom_xml)
+dom.create
+
+begin
+  dom.undefine
+rescue => e
+  puts e
+end
+dom.destroy
+dom.undefine
+conn.close
+
+----
+== Trendy?
+
++* RedHat, Ubuntu: +KVM, -Xen
++* Debian: +LXC, -OpenVZ, -VServer
+
++* "By the close of 2012, more than 50% of enterprise data center
+   workloads will be virtualized"
++* "Through 2012, 60% of virtualized servers will be less secure
+   than the physical servers they replace"
+
+----
+== Q&A?
+
++* Dziękuję za uwagę
+
+----
+== Źródła
+
+* porównanie wirtualizacji OS-level,
+  http://en.wikipedia.org/wiki/Operating_system-level_virtualization
+* Xen vs. OpenVZ,
+  http://www.hpl.hp.com/techreports/2007/HPL-2007-59R1.pdf
+* aktualne trendy, http://virtualization.info/en/predictions/
+* vagrant, http://vagrantup.com/
+* libvirt, http://libvirt.org/
+
+----
+== Do prezentacji użyto
+
+* VIM
+* vroom-pm http://ingydotnet.github.com/vroom-pm/
+

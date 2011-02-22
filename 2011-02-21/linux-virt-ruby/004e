@@ -1,0 +1,18 @@
+
+
+                        Pełna wirtualizacja
+     
+     * emulujacja hardware'u
+     * dowolny guest OS, nie wymaga modyfikacji
+     * wymagany VMM (Virtual Machine Monitor)
+       - uprzywilejowane instrukcje CPU a user-space
+       - wsparcie sprzętowe: AMD-V, Intel VT-x
+     
+
+
+
+
+
+
+
+
