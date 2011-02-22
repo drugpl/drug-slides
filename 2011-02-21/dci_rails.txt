@@ -1,0 +1,182 @@
+Rails and DCI
+
+Andrzej Krzywda
+
+http://andrzejonsoftware.blogspot.com/2011/02/dci-and-rails.html
+
+
+
+
+current_user - do you use it?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--
+
+current_user.cart.items.create
+Law of Demeter
+current_user.add_to_cart(..)
+
+current_user.posts.create(..)
+current_user.create_blog_post(..)
+
+--
+
+
+
+
+
+
+
+
+
+
+Big classes, lots of responsibilities
+
+Product.all or shop.products
+
+"website" object
+
+The same problem - big class
+
+
+
+
+
+
+
+
+
+--
+
+class User
+  include Buyer
+  include Recommender
+  include ..
+end
+
+The problem is that whenever we want a new behaviour we stick it into a class (inheritance, delegation, mixins).
+
+It means that some methods that are only used in one specific contexts are always sticked to the object.
+
+
+
+
+
+
+
+
+
+
+
+--
+
+We do class oriented programing, not object-oriented programming
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--
+
+DCI comes in
+
+Based on OOP/MVC. Invented by the same scientists who formulated MVC.
+
+Turn your big class into a thin class with lots of roles that can be injected runtime (!).
+
+current_user.extend Buyer
+current_user.add_to_cart(..)
+
+Ruby is one of the best languages for DCI, only Scala is slightly better (traits).
+
+
+
+
+
+
+
+
+
+--
+
+* DCI - contexts
+
+like a use case
+
+Controller
+
+def create
+  begin
+    AddToCartContext.new(current_user, shop, product_id, quantity).execute
+  rescue NoSuchProduct
+  rescue ProductNotAvailableAtTheMoment
+  ...
+end
+
+class AddToCartContext
+  def initialize(user, shop, product_id, quantity)
+    ...
+  end
+
+  def execute()
+    @shop.extend Catalog
+    @user.extend Buyer
+    product = shop.find_product(@product_id)
+    user.add_to_cart(product, @quantity)
+  end
+end
+
+Command pattern
+
+//nice side effect of the command pattern is easier implementation of the undo/redo functionality - unexecute.
+
+use cases - A way to reusability?
+maybe with Rails engines?
+
+
+--
+
+Rails & DCI assumptions:
+
+1. As developers we model the real/business world.
+2. If a concept appears in the domain model we reflect it in the code.
+3. Most of the web apps scenarios has the pattern of "a user does something with the app"
+4. If user and app are so important in the domain then we make them classes/objects.
+5. It results in big user/app classes.
+6. The problem of big classes can be solved by using the idea of "injecting roles" runtime.
+
+--
+
+Problems
+
+* Main page, dashboard
+* Cells help here
+* Overkill for small projects
+
+How to unextend a role? (class methods, object methods)
+
+Performance:
+mlomnicki: "Basing on my observations overall performance is unaffected"
+
