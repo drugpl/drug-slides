@@ -1,0 +1,11 @@
+.bullets.fl li:first-letter { color: red; }
+.bullets.cap ul li { text-align: left; width: 400px; margin: 0 auto; }
+.bullets.cap li:last-child { width: 100%; }
+.bullets.cap li:last-child:first-letter { color: inherit; }
+.cap h1 { margin-bottom: 10px; }
+.cap h3 { font-size: 3em; color: green; font-style: italic; }
+.cap h4 { text-align: center; font-size: 1.5em; }
+.bullets.acid ul li { text-align: left; width: 600px; margin: 0 auto; }
+.on { color: green; }
+.off { color: red; text-decoration: line-through; }
+.links { font-size: 20px; text-align: center; }
