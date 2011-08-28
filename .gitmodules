@@ -4,3 +4,6 @@
 [submodule "2010-12-14/active_model/demo"]
 	path = 2010-12-14/active_model/demo
 	url = git://github.com/paneq/rails3-active_model-filter-example.git
+[submodule "2011-03-21/drug_views_iq"]
+	path = 2011-03-21/drug_views_iq
+	url = git://github.com/paneq/drug_views_iq.git
