@@ -1,3 +1,9 @@
 = DRUG slides
 
 Here we collect presentations from our kickin ass' talks
+
+= Submodules ??
+
+Yeah! Don't forget to get them:
+
+git submodule init && git submodule update

@@ -7,3 +7,6 @@
 [submodule "2011-03-21/drug_views_iq"]
 	path = 2011-03-21/drug_views_iq
 	url = git://github.com/paneq/drug_views_iq.git
+[submodule "2011-11-21/testing_external"]
+	path = 2011-11-21/testing_external
+	url = git://github.com/paneq/drug_testing_external.git
