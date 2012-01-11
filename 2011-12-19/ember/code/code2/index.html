@@ -1,0 +1,22 @@
+<html>
+<head>
+  <title>Ember.js</title>
+</head>
+<body>
+
+  <div id="main">
+    <script type="text/x-handlebars">
+      {{#view App.BoardView}}
+      <header>
+        <h1>{{title}}</h1>
+      </header>
+      {{/view}}
+      {{view App.BoardConfigView}}
+    </script>
+  </div>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+  <script src="js/libs/ember-0.9.1.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

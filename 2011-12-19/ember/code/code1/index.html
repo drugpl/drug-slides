@@ -1,0 +1,22 @@
+<html>
+<head>
+  <title>Ember.js</title>
+</head>
+<body>
+
+  <div id="main">
+    <script type="text/x-handlebars">
+      {{#view App.BoardView titleBinding="App.boardController.title"}}
+      <header>
+        <h1>{{title}}</h1>
+      </header>
+      {{/view}}
+      {{view App.BoardConfigView valueBinding="App.boardController.title"}}
+    </script>
+  </div>
+
+  <script src="js/libs/jquery-1.6.1.min.js"></script>
+  <script src="js/libs/ember-0.9.1.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
