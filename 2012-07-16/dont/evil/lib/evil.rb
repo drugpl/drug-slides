@@ -1,0 +1,5 @@
+require 'evil/version'
+require 'evil/object'
+require 'evil/internal'
+require 'evil/class'
+require 'evil.so'

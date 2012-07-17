@@ -1,0 +1,39 @@
+body {
+  color: black;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", FreeSans, sans-serif;
+}
+
+strong {
+  color: #000;
+}
+
+.slide {
+  background-color: #D6D6D6;
+}
+
+.content.subsection {
+  background: transparent;
+  color: #c80000;
+}
+
+.content h1 {
+  font-size: 5em;
+  font-weight: bold;
+  margin: 0.5em 0 0.75em 0;
+}
+
+.content pre {
+  background-color: #D6D6D6;
+  font-size: 1.8em;
+  font-family: monospace;
+}
+
+.content.master h1 {
+  font-size: 6em;
+  color: #000;
+}
+
+.content.chat blockquote p {
+  margin: 10px 0;
+  line-height: 120%;
+}
