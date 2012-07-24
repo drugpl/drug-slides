@@ -10,3 +10,6 @@
 [submodule "2011-11-21/testing_external"]
 	path = 2011-11-21/testing_external
 	url = git://github.com/paneq/drug_testing_external.git
+[submodule "2012-07-16/m2r"]
+	path = 2012-07-16/m2r
+	url = git://github.com/paneq/m2r_drug.git
